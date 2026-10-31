@@ -4,23 +4,23 @@ import { authGuard } from './shared/guards/auth.guard';
 import { roleGuard } from './shared/guards/role.guard';
 
 const routes: Routes = [
-   // Ruta raíz → redirige al login
+   // Ruta arrel -> redirigeix al login
   {
     path: '',
     redirectTo: 'auth/login',
     pathMatch: 'full'
   },
 
-  // Módulo de autenticación (login, forgot password)
-  // NO tiene guards: cualquiera puede acceder
+  // Mòdul d'autenticació (login, forgot password)
+  // No ten guards: qualsevol pot accedir
   {
     path: 'auth',
     loadChildren: () =>
       import('./auth/auth.module').then(m => m.AuthModule)
   },
 
-  // Módulo Admin
-  // Doble protección: sesión activa + rol admin
+  // Mòdul Admin
+  // Doble protecció: sessió activa + rol admin
   {
     path: 'admin',
     canActivate: [authGuard, roleGuard('admin')],
@@ -28,7 +28,7 @@ const routes: Routes = [
       import('./admin/admin.module').then(m => m.AdminModule)
   },
 
-  // Módulo Teacher
+  // Mòdul Teacher
   {
     path: 'teacher',
     canActivate: [authGuard, roleGuard('teacher')],
@@ -36,7 +36,7 @@ const routes: Routes = [
       import('./teacher/teacher.module').then(m => m.TeacherModule)
   },
 
-  // Módulo Parent
+  // Mòdul Parent
   {
     path: 'parent',
     canActivate: [authGuard, roleGuard('parent')],
@@ -44,13 +44,12 @@ const routes: Routes = [
       import('./parent/parent.module').then(m => m.ParentModule)
   },
 
-  // Cualquier ruta desconocida → redirige al login
+  // Qualsevol ruta desconeguda → redirigeix al login
   {
     path: '**',
     redirectTo: 'auth/login'
   }
 ]; // Definim ací les rutes de l'aplicació SumeliaEdu
-
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
