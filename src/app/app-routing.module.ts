@@ -1,9 +1,14 @@
+// Haviem desenvolupat un exercici molt semblant d'aquesta arquitectua de mòduls, a la PAC 4 d'Angular avançat, qui m'ha servit d'inspiració per seguir una arquitectura semblat de mòduls (Admin, Teacher, Parent). Per millor organitzar el projecte. 
+
+// Aquest fitxer controla la navegació de tota l'aplicació. 
+
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { authGuard } from './shared/guards/auth.guard';
 import { roleGuard } from './shared/guards/role.guard';
 
-const routes: Routes = [
+// Definim ací les rutes de la nostra aplicació SumeliaEdu
+const routes: Routes = [ 
    // Ruta arrel -> redirigeix al login
   {
     path: '',
@@ -12,7 +17,7 @@ const routes: Routes = [
   },
 
   // Mòdul d'autenticació (login, forgot password)
-  // No ten guards: qualsevol pot accedir
+  // No té guards: qualsevol pot accedir
   {
     path: 'auth',
     loadChildren: () =>
@@ -49,7 +54,7 @@ const routes: Routes = [
     path: '**',
     redirectTo: 'auth/login'
   }
-]; // Definim ací les rutes de l'aplicació SumeliaEdu
+]; 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]

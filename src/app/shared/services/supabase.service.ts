@@ -1,3 +1,5 @@
+// Representa el servei central que gestiona tota la comunicació amb Supabase. Està creat al mòdul shared perquè els tres rols en faran ús (teacher/parent/admin). Llegim aquest article, junt amb altres per realitzar el Getting Started amb la BD: https://medium.com/@mail_99211/getting-started-with-supabase-a-powerful-backend-as-a-service-alternative-d10bcc616eb3
+
 import { Injectable } from '@angular/core'; // 
 import { createClient, SupabaseClient, Session, User } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
@@ -7,7 +9,7 @@ import { environment } from '../../../environments/environment';
 })
 export class SupabaseService {
 
-  private supabase: SupabaseClient; // El client de Supabase -> Permet interactuar amb la base de dades i altres serveis de Supabase. ÉS la nostra conexió amb la base de dades.
+  private supabase: SupabaseClient; // El client de Supabase -> Permet interactuar amb la base de dades i altres serveis de Supabase. ÉS la nostra conexió amb la base de dades. "SupabaseClient provides a unified interface for all Supabase operations including database CRUD operations, file storage, and GraphQL queries. It manages HTTP connections, authentication, and request routing automatically." https://docs.rs/supabase_rs/latest/supabase_rs/struct.SupabaseClient.html
 
   constructor() {
     // Ací creearem la conexió fent ús de les credencials del environment.ts. Aquestes credencials són les que ens permeten connectar-nos amb la nostra base de dades de Supabase.
@@ -17,7 +19,7 @@ export class SupabaseService {
     );
   }
 
-  // Mètodes per a la gestió d'autenticació i interacció amb la base de dades
+  // Mètodes per a la gestió d'AUTENTICACIÓ i interacció amb la base de dades
 
   // Iniciem sessió amb email i password
   signIn(email: string, password: string) {
