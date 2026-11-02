@@ -57,8 +57,8 @@ USING (
 
 -- Admin sols pot crear, editar i desactivar alumnes. Els pares i professors no poden fer-ho
 CREATE POLICY "students_insert_admin"
-ON students FOR INSERT
-WITH CHECK (
+ON students FOR INSERT -- s'activa quan l'usuari fa un INSERT (intenta afegir un nou alumne a la taula students).
+WITH CHECK ( -- WITH CHECK: comprova que les dades que s'intenten inserir compleixen les condicions establertes. Si no es compleixen, l'operació INSERT serà rebutjada. https://dev.mysql.com/doc/refman/9.7/en/view-check-option.html
   school_id = get_my_school_id()
   AND get_my_role() = 'admin'
 );
@@ -82,10 +82,10 @@ USING (
 -- Parent sols pot veure l'assistència dels seus propis fills
 CREATE POLICY "attendance_select_parent"
 ON attendance FOR SELECT
-USING (
+USING ( -- Condicions que s'han de complir 
   school_id = get_my_school_id()
-  AND student_id IN (
-    SELECT id FROM students WHERE parent_id = auth.uid()
+  AND student_id IN ( -- Amb l'operador IN comprovem que l'id de l'alumne (student_id) associat a aquest registre d'assistència estiga inclòs dins d'una llista d'IDs que calcularem tot seguit.
+    SELECT id FROM students WHERE parent_id = auth.uid() -- subconsulta: com que un pare/mare pot tenir més d'un fill matriculat, la base de dades va a la taula students i cerca automàticament tots els IDs de l'alumnat (SELECT_id) on el camp parent_id coincideix amb l'identificador del pare o mare que ha iniciat sessió (auth.uid()). 
   )
 );
 
