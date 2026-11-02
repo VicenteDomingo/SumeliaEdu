@@ -1,4 +1,4 @@
-// Haviem desenvolupat un exercici molt semblant d'aquesta arquitectua de mòduls, a la PAC 4 d'Angular avançat, qui m'ha servit d'inspiració per seguir una arquitectura semblat de mòduls (Admin, Teacher, Parent). Per millor organitzar el projecte. 
+// Haviem desenvolupat un exercici molt semblant d'aquesta arquitectua de mòduls a la PAC 4 d'Angular avançat, qui m'ha servit d'inspiració per seguir una arquitectura semblat de mòduls (Admin, Teacher, Parent), per millor organitzar el projecte. 
 
 // Aquest fitxer controla la navegació de tota l'aplicació. 
 
@@ -25,7 +25,11 @@ const routes: Routes = [
   },
 
   // Mòdul Admin
-  // Doble protecció: sessió activa + rol admin
+  // Doble protecció: sessió activa + rol admin. "With CanActivate, we check whether the user is logged in, according to the response from the isAuthentication function in the auth service, then we redirect to the login page if the user is not logged in. And we print an alert."https://medium.com/@yagmurgazezoglu/angular-authentication-canactivate-canactivatechild-guards-1b25772ec62a 
+
+  // Amb authGuard, comprovem primer de tot si l'usuari ha iniciat sessió (té una sessió activa a Supabase). Si no té sessió activa, el guard redirigeix a la pàgina de login. https://dev.to/kingsley/building-secure-authentication-in-angular-with-supabase-2e1p 
+
+
   {
     path: 'admin',
     canActivate: [authGuard, roleGuard('admin')],

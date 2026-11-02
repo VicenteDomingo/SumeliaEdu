@@ -1,6 +1,4 @@
 // Representa el mòdul arrel. A l'article següent trobem més informació sobre aquest mòdul: https://v2.angular.io/docs/ts/latest/guide/appmodule.html
-
-
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 

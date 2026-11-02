@@ -1,12 +1,14 @@
-import { inject } from '@angular/core';
-import { CanActivateFn, Router } from '@angular/router';
-import { SupabaseService } from '../services/supabase.service';
+import { inject } from '@angular/core'; // Importem la funció inject d'Angular. Ens permet injectar dependències dins d'una funció, com ara un guard. Aquesta és una manera de fer injecció de dependències en Angular.
+import { CanActivateFn, Router } from '@angular/router'; 
+import { SupabaseService } from '../services/supabase.service'; // Importem el servei SupabaseService, que ens permet interactuar amb Supabase, com ara obtenir la sessió de l'usuari i comprovar si està autenticat.
 
 // Guard verifica si l'usuari està loguejat, és a dir, si hi ha una sessió activa. Si no ho està, el redirigeix al login. Aquest guard s'utilitza per protegir rutes que només poden ser accedides per usuaris autenticats.
 
 // En cas que no hi haja sessió activa -> redirigeix al login. En cas que hi haja sessió activa → deixa passar a la ruta protegida.
-export const authGuard: CanActivateFn = async (route, state) => {
-  const supabase = inject(SupabaseService);
+export const authGuard: CanActivateFn = async (route, state) => { // Constant per ser utilitzada al fitxer de rutes (app-routing.module.ts)
+
+  // Injecció dels serveis
+  const supabase = inject(SupabaseService); 
   const router = inject(Router);
 
   const { data } = await supabase.getSession();
