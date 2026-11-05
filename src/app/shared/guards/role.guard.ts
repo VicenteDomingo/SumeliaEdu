@@ -1,10 +1,11 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { SupabaseService } from '../services/supabase.service';
+import { Role } from '../models/database.models';
 
 // Guard per verificar si el rol de l'usuari coincideix amb la ruta
 // Per exemple: un teacher no pot accedir a /admin
-export const roleGuard = (requiredRole: string): CanActivateFn => {
+export const roleGuard = (requiredRole: Role): CanActivateFn => {
   return async () => {
     const supabase = inject(SupabaseService);
     const router = inject(Router);

@@ -3,6 +3,7 @@
 import { Injectable } from '@angular/core'; // 
 import { createClient, SupabaseClient, Session, User } from '@supabase/supabase-js';
 import { environment } from '../../../environments/environment';
+import { Profile } from '../models/database.models';
 
 @Injectable({
   providedIn: 'root' // Disponible al nivell de tota l'aplicació sense importar-lo en cap mòdul específic
@@ -49,12 +50,21 @@ export class SupabaseService {
   // Accés a Dades amb RLS actiu amb Supabase.
 
   // Obtenim el perfil de l'asuari actual, incloent el seu rol: admin/teacher/parent. 
+  // async getProfile(userId: string) {
+  //   return this.supabase
+  //     .from('profiles') // taula de perfils de la nostra BBDD
+  //     .select('*')      // seleccionem tots els camps
+  //     .eq('id', userId) // on id = userId (id de l'usuari actual)
+  //     .single();        // esperem un únic resultat 
+  // }
   async getProfile(userId: string) {
-    return this.supabase
-      .from('profiles') // taula de perfils de la nostra BBDD
-      .select('*')      // seleccionem tots els camps
-      .eq('id', userId) // on id = userId (id de l'usuari actual)
-      .single();        // esperem un únic resultat 
+    const { data, error } = await this.supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    return { data: data as Profile | null, error };
   }
 
   // Getter per accedir al client de Supabase des d'altres components o serveis

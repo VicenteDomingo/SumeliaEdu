@@ -3,6 +3,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SupabaseService } from '../services/supabase.service';
+import { NotificationService } from '../services/notification.service';
 
 @Component({
   selector: 'app-header',
@@ -17,7 +18,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private supabase: SupabaseService, 
-    private router: Router
+    private router: Router,
+    private notification: NotificationService
   ) {}
 
   // S'executa en carregar-se el component. Llegeix la sessió, cerca el perfil a profiles i guarda el nom
@@ -33,5 +35,6 @@ export class HeaderComponent implements OnInit {
   async logout() {
     await this.supabase.signOut();
     this.router.navigate(['/auth/login']); // redirigim al login. Així combrim el "tancament de sessió"
+    this.notification.showSuccess('You have been logged out.');
   }
 }
