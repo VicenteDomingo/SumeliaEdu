@@ -43,6 +43,9 @@
           @if (loginForm.get('password')?.hasError('minlength')) {
             <mat-error>Minimum 6 characters</mat-error>
           }
+          @if (loginForm.get('password')?.hasError('maxlength')) {
+            <mat-error>Maximum 16 characters</mat-error>
+          }
         </mat-form-field>
 
         <button mat-flat-button color="primary" type="submit"

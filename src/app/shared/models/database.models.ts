@@ -125,3 +125,19 @@ export interface Fee {
   paid_at: string | null;
   created_at: string;
 }
+
+// Interfície que representa un alumne junt amb el nom de la seua classe. Aquesta interfície s'utilitza per mostrar informació combinada d'un alumne i la seva classe en la vista de l'aplicació.
+export interface StudentWithClass extends Student { // Estén la intefície Student. A més, amb el camp extra "classes". 
+  classes: { name: string } | null;
+}
+
+// Les dades que enviem a Supabase en crear o editar un alumne. Aquesta interfície defineix els camps necessaris per a la creació o actualització d'un registre d'alumne a la base de dades.
+export interface StudentData {
+  school_id: string;
+  class_id: string;
+  parent_id: string | null;
+  full_name: string;
+  admission_no: string | null;
+  date_of_birth: string | null;
+  gender: Gender | null;
+}

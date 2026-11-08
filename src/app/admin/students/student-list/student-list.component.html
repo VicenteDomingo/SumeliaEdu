@@ -1,0 +1,76 @@
+<!-- Component header reutilitzable (shared) -->
+<app-header roleLabel="Admin"></app-header>
+
+<main class="page">
+
+  <a mat-button routerLink="/admin/dashboard">
+    <mat-icon>arrow_back</mat-icon> Dashboard
+  </a>
+
+  <h1>Students</h1>
+
+  <mat-form-field appearance="outline" class="search">
+    <mat-label>Search student</mat-label>
+    <input matInput type="text" [(ngModel)]="searchText" />
+    <mat-icon matSuffix>search</mat-icon>
+  </mat-form-field>
+
+  <div class="chips" role="group" aria-label="Filter by class">
+    <button type="button" class="chip"
+            [class.selected]="selectedClassId === ''"
+            (click)="selectedClassId = ''">
+      All ({{ students.length }})
+    </button>
+
+    @for (schoolClass of classes; track schoolClass.id) {
+      <button type="button" class="chip"
+              [class.selected]="selectedClassId === schoolClass.id"
+              (click)="selectedClassId = schoolClass.id">
+        {{ schoolClass.name }}
+      </button>
+    }
+  </div>
+
+  @if (loading) {
+    <p role="status">Loading students...</p>
+  } @else if (filteredStudents.length === 0) {
+    <p>No students found.</p>
+  } @else {
+    <ul class="student-list">
+      @for (student of filteredStudents; track student.id) {
+        <li class="student-row" [class.inactive]="!student.active">
+
+          <div class="avatar" aria-hidden="true">
+            {{ getInitials(student.full_name) }}
+          </div>
+
+          <div class="info">
+            <strong>{{ student.full_name }}</strong>
+            <span>{{ student.classes?.name }} · {{ student.admission_no }}</span>
+          </div>
+
+          <span class="badge">{{ student.active ? 'Active' : 'Inactive' }}</span>
+
+          <a mat-icon-button
+             [routerLink]="['/admin/students', student.id, 'edit']"
+             [attr.aria-label]="'Edit ' + student.full_name">
+            <mat-icon>edit</mat-icon>
+          </a>
+
+          <button mat-icon-button type="button"
+                  (click)="toggleActive(student)"
+                  [attr.aria-label]="(student.active ? 'Deactivate ' : 'Activate ') + student.full_name">
+            <mat-icon>{{ student.active ? 'person_off' : 'person' }}</mat-icon>
+          </button>
+
+        </li>
+      }
+    </ul>
+  }
+
+  <a mat-fab color="primary" routerLink="/admin/students/new"
+    class="fab" aria-label="Add new student">
+    <mat-icon>add</mat-icon>
+  </a>
+
+</main>

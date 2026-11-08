@@ -1,0 +1,75 @@
+<app-header roleLabel="Admin"></app-header>
+
+<main class="page">
+
+  <a mat-button routerLink="/admin/students">
+    <mat-icon>arrow_back</mat-icon> Students
+  </a>
+
+  <h1>{{ isEditMode ? 'Edit student' : 'Add new student' }}</h1>
+
+  <form [formGroup]="studentForm" (ngSubmit)="onSubmit()">
+
+    <mat-form-field appearance="outline">
+      <mat-label>Full name</mat-label>
+      <input matInput type="text" formControlName="full_name" />
+      @if (studentForm.get('full_name')?.hasError('required')) {
+        <mat-error>Full name is required</mat-error>
+      }
+      @if (studentForm.get('full_name')?.hasError('minlength')) {
+        <mat-error>Minimum 3 characters</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Class</mat-label>
+      <mat-select formControlName="class_id">
+        @for (schoolClass of classes; track schoolClass.id) {
+          <mat-option [value]="schoolClass.id">{{ schoolClass.name }}</mat-option>
+        }
+      </mat-select>
+      @if (studentForm.get('class_id')?.hasError('required')) {
+        <mat-error>Select a class</mat-error>
+      }
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Parent / Guardian (optional)</mat-label>
+      <mat-select formControlName="parent_id">
+        <mat-option value="">No parent account yet</mat-option>
+        @for (parent of parents; track parent.id) {
+          <mat-option [value]="parent.id">{{ parent.full_name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Admission number (optional)</mat-label>
+      <input matInput type="text" formControlName="admission_no" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" floatLabel="always">
+      <mat-label>Date of birth (optional)</mat-label>
+      <input matInput type="date" formControlName="date_of_birth" />
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Gender (optional)</mat-label>
+      <mat-select formControlName="gender">
+        <mat-option value="">Not specified</mat-option>
+        <mat-option value="male">Male</mat-option>
+        <mat-option value="female">Female</mat-option>
+        <mat-option value="other">Other</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button mat-flat-button color="primary" type="submit"
+            class="save-button" [disabled]="saving">
+      {{ isEditMode ? 'Save changes' : 'Create student' }}
+    </button>
+
+    <a mat-stroked-button routerLink="/admin/students" class="save-button">Cancel</a>
+
+  </form>
+
+</main>>
