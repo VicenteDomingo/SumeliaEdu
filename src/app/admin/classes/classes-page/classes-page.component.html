@@ -1,0 +1,95 @@
+<app-header roleLabel="Admin"></app-header>
+
+<main class="page">
+
+  <a mat-button routerLink="/admin/dashboard">
+    <mat-icon>arrow_back</mat-icon> Dashboard
+  </a>
+
+  <h1>Classes &amp; Subjects</h1>
+
+  <mat-tab-group>
+
+    <!-- Camp de les Classes -->
+    <mat-tab label="Classes">
+      <div class="tab-content">
+
+        @if (loading) {
+          <p role="status">Loading classes...</p>
+        } @else if (classes.length === 0) {
+          <p>There are no classes yet. Create the first one below.</p>
+        } @else {
+          <ul class="card-list">
+            @for (schoolClass of classes; track schoolClass.id) {
+              <li class="class-card">
+                <h2>{{ schoolClass.name }}</h2>
+                <p>Tutor: {{ getTeacherName(schoolClass.tutor_id) }}</p>
+                <p>
+                  {{ plural(countStudents(schoolClass.id), 'student') }} ·
+                  {{ plural(countSubjects(schoolClass.id), 'subject') }}
+                </p>
+              </li>
+            }
+          </ul>
+        }
+
+        <h2 class="section-title">Create new class</h2>
+        <app-class-form
+          [teachers]="teachers"
+          [schoolId]="schoolId"
+          (created)="loadData()">
+        </app-class-form>
+
+      </div>
+    </mat-tab>
+
+    <!-- Camp de les Assignatures -->
+    <mat-tab label="Subjects">
+      <div class="tab-content">
+
+        @if (classes.length === 0) {
+          <p>Create a class first, in the Classes tab.</p>
+        } @else {
+
+          <mat-form-field appearance="outline" class="selector">
+            <mat-label>Showing subjects for</mat-label>
+            <mat-select [(ngModel)]="selectedClassId">
+              @for (schoolClass of classes; track schoolClass.id) {
+                <mat-option [value]="schoolClass.id">{{ schoolClass.name }}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+
+          <h2>{{ selectedClassName }} — {{ plural(subjectsOfSelectedClass.length, 'subject') }}</h2>
+
+          @if (subjectsOfSelectedClass.length === 0) {
+            <p>No subjects yet for this class.</p>
+          } @else {
+            <ul class="subject-list">
+              @for (subject of subjectsOfSelectedClass; track subject.id) {
+                <li class="subject-row">
+                  <strong>{{ subject.name }}</strong>
+                  <span>
+                    {{ subject.code ? subject.code + ' · ' : '' }}{{ getTeacherName(subject.teacher_id) }}
+                  </span>
+                </li>
+              }
+            </ul>
+          }
+
+          <h2 class="section-title">Add subject to {{ selectedClassName }}</h2>
+          <app-subject-form
+            [classId]="selectedClassId"
+            [schoolId]="schoolId"
+            [teachers]="teachers"
+            (created)="loadData()">
+          </app-subject-form>
+
+        }
+
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</main>

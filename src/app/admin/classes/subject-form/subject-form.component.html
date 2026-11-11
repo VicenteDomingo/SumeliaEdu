@@ -1,0 +1,36 @@
+<form [formGroup]="subjectForm" #formDirective="ngForm" (ngSubmit)="onSubmit(formDirective)">
+
+  <mat-form-field appearance="outline">
+    <mat-label>Subject name</mat-label>
+    <input matInput type="text" formControlName="name" placeholder="e.g. Social Studies" />
+    @if (subjectForm.get('name')?.hasError('required')) {
+      <mat-error>Subject name is required</mat-error>
+    }
+    @if (subjectForm.get('name')?.hasError('minlength')) {
+      <mat-error>Minimum 2 characters</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Subject code (optional)</mat-label>
+    <input matInput type="text" formControlName="code" placeholder="e.g. SS6" />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Assign teacher</mat-label>
+    <mat-select formControlName="teacher_id">
+      @for (teacher of teachers; track teacher.id) {
+        <mat-option [value]="teacher.id">{{ teacher.full_name }}</mat-option>
+      }
+    </mat-select>
+    @if (subjectForm.get('teacher_id')?.hasError('required')) {
+      <mat-error>Select a teacher</mat-error>
+    }
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" type="submit"
+          class="save-button" [disabled]="saving">
+    Add subject
+  </button>
+
+</form>

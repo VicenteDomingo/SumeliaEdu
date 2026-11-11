@@ -83,7 +83,7 @@ export class SupabaseService {
       return null;
     }
 
-    const { data: profile } = await this.getProfile(data. session.user.id); // La funció getProfile() rep l'id i consulta la base de dades per recuperar el perfil corresponent. Extrau la propietat data i la guarda en una variable que anomenem profile i que conté el perfil de l'usuari. Retorna eixe perfil amb id, name, role, shool_id
+    const { data: profile } = await this.getProfile(data.session.user.id); // La funció getProfile() rep l'id i consulta la base de dades per recuperar el perfil corresponent. Extrau la propietat data i la guarda en una variable que anomenem profile i que conté el perfil de l'usuari. Retorna eixe perfil amb id, name, role, shool_id
     return profile;
   }
 

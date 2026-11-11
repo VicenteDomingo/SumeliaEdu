@@ -1,0 +1,38 @@
+<form 
+  [formGroup]="classForm" 
+  #formDirective="ngForm" 
+  (ngSubmit)="onSubmit(formDirective)"
+  >
+  <mat-form-field appearance="outline">
+    <mat-label>Class name</mat-label>
+    <input 
+      matInput type="text" 
+      formControlName="name" 
+      placeholder="e.g. Grade 8A" 
+    />
+    @if (classForm.get('name')?.hasError('required')) {
+      <mat-error>Class name is required</mat-error>
+    }
+    @if (classForm.get('name')?.hasError('minlength')) {
+      <mat-error>Minimum 2 characters</mat-error>
+    }
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <mat-label>Tutor teacher</mat-label>
+    <mat-select formControlName="tutor_id">
+      @for (teacher of teachers; track teacher.id) {
+        <mat-option [value]="teacher.id">{{ teacher.full_name }}</mat-option>
+      }
+    </mat-select>
+    @if (classForm.get('tutor_id')?.hasError('required')) {
+      <mat-error>Select a tutor</mat-error>
+    }
+  </mat-form-field>
+
+  <button mat-flat-button color="primary" type="submit"
+          class="save-button" [disabled]="saving">
+    Create class
+  </button>
+
+</form>

@@ -13,10 +13,20 @@ import { StudentService } from '../../../shared/services/student.service';
 import { SupabaseService } from '../../../shared/services/supabase.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { 
+  Gender,
   Profile, 
   SchoolClass, 
   StudentData 
 } from '../../../shared/models/database.models';
+
+type StudentFormControls = {
+  full_name: FormControl<string>;
+  class_id: FormControl<string>;
+  parent_id: FormControl<string>;
+  admission_no: FormControl<string>;
+  date_of_birth: FormControl<string>;
+  gender: FormControl<Gender | ''>;
+};
 
 @Component({
   selector: 'app-student-form',
@@ -24,13 +34,8 @@ import {
   styleUrl: './student-form.component.scss'
 })
 export class StudentFormComponent implements OnInit {
-  full_name: FormControl;
-  class_id: FormControl;
-  parent_id: FormControl;
-  admission_no: FormControl;
-  date_of_birth: FormControl;
-  gender: FormControl;
-  studentForm: FormGroup; // Variable que representa tot el formulari. https://medium.com/@ingenieroandrade/angular-formcontrol-y-formgroup-32428ebcc651
+
+  studentForm: FormGroup<StudentFormControls>;
   classes: SchoolClass[] = []; // Variable per guardar les classes que recuperem de Supabase. Ho tipem amb SchoolClass[] -> la variable contindrà un llistat d'elements del tipus SchoolClass
   parents: Profile[] = [];     // Igual que la variable anterior
   schoolId = '';
@@ -46,34 +51,15 @@ export class StudentFormComponent implements OnInit {
     private supabase: SupabaseService, // Per obtenir el perfil i escola de l'administrador
     private notification: NotificationService // Mostrem missatge a l'usuari
   ) {
-  
-    // Creem els controls individuals
-    this.full_name = new FormControl('', [
-      Validators.required,
-      Validators.minLength(3),
-      Validators.maxLength(255)
-    ]);
-
-    this.class_id = new FormControl('', [
-      Validators.required
-    ]);
-
-    this.parent_id = new FormControl('');
-
-    this.admission_no = new FormControl('');
-
-    this.date_of_birth = new FormControl('');
-
-    this.gender = new FormControl('');
 
     // Agrupem tots els controls 
-    this.studentForm = this.fb.group({
-      full_name: this.full_name,
-      class_id: this.class_id,
-      parent_id: this.parent_id,
-      admission_no: this.admission_no,
-      date_of_birth: this.date_of_birth,
-      gender: this.gender
+    this.studentForm = this.fb.nonNullable.group({
+      full_name: ['', [Validators.required, Validators.minLength(3)]],
+      class_id: ['', Validators.required],
+      parent_id: [''],
+      admission_no: [''],
+      date_of_birth: [''],
+      gender: ['' as Gender | '']
     });
 
   }
@@ -131,8 +117,10 @@ export class StudentFormComponent implements OnInit {
 
     this.saving = true;
 
-    // Els camps opcionals ('') es guarden com null en la base de dades
-    const value = this.studentForm.value;
+    // getRawValue() retorna tots els camps amb el seu tipus exact
+    const value = this.studentForm.getRawValue();
+
+    // Els camps opcionals buits ('') es guarden com null a la bbdd
     const student: StudentData = {
       school_id: this.schoolId,
       class_id: value.class_id,

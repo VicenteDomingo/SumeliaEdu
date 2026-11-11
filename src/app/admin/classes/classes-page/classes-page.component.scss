@@ -1,0 +1,61 @@
+.page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.tab-content {
+  padding: 16px 0;
+}
+
+.card-list,
+.subject-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.card-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.class-card {
+  padding: 12px 16px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.class-card h2 {
+  margin: 0 0 4px;
+  font-size: 18px;
+  color: #0d47a1;
+}
+
+.class-card p {
+  margin: 2px 0;
+  font-size: 14px;
+  color: #424242;
+}
+
+.section-title {
+  margin-top: 24px;
+}
+
+.selector {
+  width: 100%;
+}
+
+.subject-row {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.subject-row span {
+  font-size: 13px;
+  color: #555;
+}

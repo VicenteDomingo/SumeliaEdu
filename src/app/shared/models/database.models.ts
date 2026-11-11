@@ -128,10 +128,10 @@ export interface Fee {
 
 // Interfície que representa un alumne junt amb el nom de la seua classe. Aquesta interfície s'utilitza per mostrar informació combinada d'un alumne i la seva classe en la vista de l'aplicació.
 export interface StudentWithClass extends Student { // Estén la intefície Student. A més, amb el camp extra "classes". 
-  classes: { name: string } | null;
+  classes: { name: string } | null; // L'anomenem classes perquè s'anomena així la taula de la que ho portem. Pot ser null en cas que l'alumne no tinga classe
 }
 
-// Les dades que enviem a Supabase en crear o editar un alumne. Aquesta interfície defineix els camps necessaris per a la creació o actualització d'un registre d'alumne a la base de dades.
+// Les dades que enviem a Supabase en crear o editar un alumne. Aquesta interfície defineix els camps necessaris per a la creació o actualització d'un registre d'alumne a la base de dades. No inclou id, active o created_at perquè ho emplena la bbdd
 export interface StudentData {
   school_id: string;
   class_id: string;
@@ -140,4 +140,21 @@ export interface StudentData {
   admission_no: string | null;
   date_of_birth: string | null;
   gender: Gender | null;
+}
+
+// Les dades que enviem a Supabase en crear una classe. La interfície SchoolClass representa una classe que ja existeix a la base de dades. Per contra, ClassData representa les dades que enviarem per crear una classe nova. Les propietats id i created_at no les trobem ja que hem assignat a Supabase que les genere automàticament.
+export interface ClassData {
+  school_id: string; // Identifica l'escola. Recordem que SumeliaApp està pensada per a ser usada en diferents escoles
+  name: string;
+  year: number;
+  tutor_id: string | null; // Podem trobar classes que encara no tinguen tutor assignat
+}
+
+// Les dades que enviem a Supabase en crear una assignatura
+export interface SubjectData {
+  school_id: string;
+  class_id: string;
+  teacher_id: string | null;
+  name: string;
+  code: string | null;
 }
