@@ -1,0 +1,32 @@
+<!-- El header amb el Sign out. Li passem el rol. [] -> https://v17.angular.io/guide/property-binding Aixi, enviem a app-header el valor de la propietat roleLabel que reb NavShellComponent. 
+
+Volem que aquest mateix component funcione per als tres rols
+
+-->
+<app-header [roleLabel]="roleLabel"></app-header>
+
+<div class="shell">
+
+  <nav class="nav" aria-label="Main navigation">
+    <!-- now control flow d'Angular https://angular.dev/guide/templates/control-flow. Bucle flor per mostrar les icones de navegació -->
+    @for (item of items; track item.route) {
+      @if (item.enabled) {
+        <a class="nav-link" [routerLink]="item.route" routerLinkActive="active">
+          <!-- atribut d'accessibilitat: Purely decorative content, such as icons or images. https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/Reference/Attributes/aria-hidden -->
+          <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </a>
+      } @else {
+        <span class="nav-link disabled" aria-disabled="true">
+          <mat-icon aria-hidden="true">{{ item.icon }}</mat-icon>
+          <span>{{ item.label }}</span>
+        </span>
+      }
+    }
+  </nav>
+
+  <main class="content">
+    <ng-content></ng-content>
+  </main>
+
+</div>

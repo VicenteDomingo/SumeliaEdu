@@ -1,0 +1,113 @@
+<app-nav-shell roleLabel="Teacher" [items]="navItems">
+
+  <h1>Take attendance</h1>
+
+  @if (loading) {
+    <p role="status">Loading...</p>
+
+  } @else if (subjects.length === 0) {
+    <p>You have no subjects assigned yet. Ask your school administrator.</p>
+
+  } @else if (saved) {
+
+    <!-- PANTALLA 2: LLISTA GUARDADA -->
+    <section class="saved" role="status">
+      <mat-icon class="saved-icon" aria-hidden="true">check_circle</mat-icon>
+      <h2>List saved</h2>
+      <p>{{ selectedSubject?.name }} · {{ selectedSubject?.classes?.name }}</p>
+
+      <div class="summary">
+        @for (status of statuses; track status.value) {
+          <div class="summary-box">
+            <strong>{{ countStatus(status.value) }}</strong>
+            <span>{{ status.label }}</span>
+          </div>
+        }
+      </div>
+
+      <p>Families will be able to see today's attendance on their dashboard.</p>
+
+      <div class="actions">
+        <a mat-flat-button color="primary" routerLink="/teacher/dashboard">Back to dashboard</a>
+        <button mat-stroked-button type="button" (click)="saved = false">Edit list</button>
+      </div>
+    </section>
+
+  } @else {
+
+    <!-- PANTALLA 1: PASSEM LLISTA -->
+    <mat-form-field appearance="outline" class="subject-select">
+      <mat-label>Subject</mat-label>
+      <mat-select [value]="selectedSubjectId" (selectionChange)="onSubjectChange($event.value)">
+        @for (subject of subjects; track subject.id) {
+          <mat-option [value]="subject.id">{{ subject.name }} · {{ subject.classes?.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <p class="context">
+      {{ selectedSubject?.classes?.name }} · {{ today | date:'EEE d MMM y' }} ·
+      {{ students.length }} {{ students.length === 1 ? 'student' : 'students' }}
+    </p>
+
+    @if (students.length === 0) {
+      <p>There are no active students in this class.</p>
+    } @else {
+
+      <progress [value]="markedCount" [max]="students.length" aria-label="Students marked"></progress>
+      <p class="progress-text">{{ markedCount }} / {{ students.length }} marked</p>
+
+      <p class="legend">P = Present · A = Absent · L = Late · J = Justified</p>
+
+      <button mat-stroked-button type="button" (click)="markAllPresent()">
+        Mark all as present
+      </button>
+
+      <ul class="student-list">
+        @for (student of students; track student.id) {
+          <li class="student-row">
+
+            <div class="avatar" aria-hidden="true">{{ getInitials(student.full_name) }}</div>
+            <span class="name">{{ student.full_name }}</span>
+
+            <div class="buttons" role="group" [attr.aria-label]="'Attendance for ' + student.full_name">
+              @for (status of statuses; track status.value) {
+                <button type="button" class="status-btn"
+                        [attr.data-status]="status.value"
+                        [class.selected]="marks[student.id] === status.value"
+                        [attr.aria-pressed]="marks[student.id] === status.value"
+                        [attr.aria-label]="status.label + ' - ' + student.full_name"
+                        (click)="setMark(student.id, status.value)">
+                  {{ status.letter }}
+                </button>
+              }
+            </div>
+
+            <div class="note-slot" [class.visible]="needsNote(student.id)">
+              @if (needsNote(student.id)) {
+                <mat-form-field appearance="outline" subscriptSizing="dynamic">
+                  <mat-label>Note (optional)</mat-label>
+                  <input matInput type="text" [(ngModel)]="notes[student.id]" />
+                </mat-form-field>
+              }
+            </div>
+
+          </li>
+        }
+      </ul>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" type="button"
+                (click)="save(true)" [disabled]="saving">
+          Save list ({{ markedCount }}/{{ students.length }})
+        </button>
+        <button mat-stroked-button type="button"
+                (click)="save(false)" [disabled]="saving">
+          Save as draft
+        </button>
+      </div>
+
+    }
+  }
+
+</app-nav-shell>

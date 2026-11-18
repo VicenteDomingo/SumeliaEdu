@@ -158,3 +158,18 @@ export interface SubjectData {
   name: string;
   code: string | null;
 }
+
+// Volem una interfície que represente una matèria, a més de la informació sobre la classe. Ho usem al dashboard de Teacher
+export interface SubjectWithClass extends Subject {
+  classes: { name: string } | null;
+}
+
+// Aquest model representa les dades que enviem a Supabase en guardar l'assistència d'un alumne. AttendanceData -> Attendance (Supabase)
+export interface AttendanceData {
+  school_id: string;
+  student_id: string;
+  subject_id: string;
+  date: string;
+  status: AttendanceStatus;
+  note: string | null; // Observació per escriure justificació a l'assistència
+}

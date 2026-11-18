@@ -1,6 +1,52 @@
-<app-header roleLabel="Teacher"></app-header>
+<app-nav-shell roleLabel="Teacher" [items]="navItems">
 
-<main class="dashboard">
-  <h1>Admin dashboard</h1>
-  <p>Welcome to SumeliaEdu. The school summary will appear here.</p>
-</main>
+  <h1>Dashboard</h1>
+
+  @if (loading) {
+    <p role="status">Loading your classes...</p>
+  } @else {
+
+    @if (firstPending) {
+      <section class="alert">
+        <div>
+          <strong>Attendance pending</strong>
+          <span>{{ firstPending.subject.name }} · {{ firstPending.subject.classes?.name }}</span>
+        </div>
+        <a mat-flat-button color="primary"
+          [routerLink]="['/teacher/attendance', firstPending.subject.id]">
+          Take
+        </a>
+      </section>
+    }
+
+    <h2>Today's classes <span class="date">{{ today | date:'EEE d MMM' }}</span></h2>
+
+    @if (todaySubjects.length === 0) {
+      <p>You have no subjects assigned yet. Ask your school administrator.</p>
+    } @else {
+      <ul class="subject-list">
+        @for (item of todaySubjects; track item.subject.id) {
+          <li class="subject-card">
+            <div class="info">
+              <strong>{{ item.subject.name }}</strong>
+              <span>
+                {{ item.subject.classes?.name }} ·
+                {{ item.total }} {{ item.total === 1 ? 'student' : 'students' }}
+              </span>
+            </div>
+
+            <span class="badge" [class.done]="item.done">
+              {{ item.done ? 'Done' : 'Pending' }}
+            </span>
+
+            <a mat-stroked-button [routerLink]="['/teacher/attendance', item.subject.id]">
+              {{ item.done ? 'Review' : 'Take list' }}
+            </a>
+          </li>
+        }
+      </ul>
+    }
+
+  }
+
+</app-nav-shell>

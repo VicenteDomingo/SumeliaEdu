@@ -1,0 +1,89 @@
+// En ser "mobile-first, escrivim 1r els estils per al MÒBIL (per defecte). El menú fixe a la part inferior.
+.shell {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 16px 88px;   // 88px abajo para que el menú no tape el final
+  box-sizing: border-box;
+}
+
+.nav {
+  // Menu de navegació fixat a la part inferior
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0; 
+  z-index: 10;
+  display: flex;
+  background: white;
+  border-top: 1px solid #bdbdbd;
+}
+
+.nav-link {
+  display: flex;
+  flex: 1;
+  flex-direction: column; // Icones damunt del text
+  align-items: center;
+  justify-content: center;
+  min-height: 56px;
+  padding: 6px 2px;
+  font-size: 12px;
+  color: #424242;
+  text-decoration: none;
+}
+
+.nav-link.active {
+  color: #0d47a1;
+  font-weight: bold;
+}
+
+.nav-link.disabled {
+  color: #757575;
+  cursor: not-allowed;
+}
+
+.nav-link:focus-visible {
+  outline: 3px solid #0d47a1;
+  outline-offset: -3px;
+}
+
+// Media Queries per al format escriptori amb el menú a l'esquerra
+@media (min-width: 768px) {
+  .shell {
+    flex-direction: row;
+    min-height: calc(100vh - 64px);
+  }
+
+  .nav {
+    position: static;
+    flex-direction: column;
+    flex: 0 0 220px;
+    padding: 16px 0;
+    border-top: none;
+    border-right: 1px solid #bdbdbd;
+  }
+
+  .nav-link {
+    flex: 0 0 auto;
+    flex-direction: row; // Icones al costat del text
+    justify-content: flex-start;
+    gap: 12px;
+    min-height: 48px;
+    padding: 12px 24px;
+    font-size: 14px;
+  }
+
+  .nav-link.active {
+    background: #e3f2fd;
+  }
+
+  .content {
+    padding: 24px;
+  }
+}
