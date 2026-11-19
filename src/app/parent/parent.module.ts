@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
+import { MatIcon } from '@angular/material/icon';
 
 import { ParentRoutingModule } from './parent-routing.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -14,7 +14,8 @@ import { SharedModule } from '../shared/shared.module';
   imports: [
     CommonModule,
     SharedModule,
-    ParentRoutingModule
+    ParentRoutingModule,
+    MatIcon
   ]
 })
 export class ParentModule { }

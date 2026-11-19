@@ -1,6 +1,55 @@
-<app-header roleLabel="Parent"></app-header>
+<app-nav-shell roleLabel="Parent" [items]="navItems">
 
-<main class="dashboard">
-  <h1>Admin dashboard</h1>
-  <p>Welcome to SumeliaEdu. The school summary will appear here.</p>
-</main>
+  <h1>Hello, {{ fullName }}</h1>
+  <p class="date">{{ today | date:'EEEE, d MMMM y' }}</p>
+
+  @if (loading) {
+    <p role="status">Loading...</p>
+
+  } @else if (cards.length === 0) {
+    <p>No children are linked to your account yet. Please contact your school administrator.</p>
+
+  } @else {
+
+    <div class="cards">
+      @for (card of cards; track card.student.id) {
+
+        <section class="child-card" [attr.data-status]="card.todayStatus">
+
+          <p class="child-name">
+            {{ card.student.full_name | uppercase }} · TODAY
+          </p>
+
+          <p class="status">
+            <mat-icon aria-hidden="true">{{ icons[card.todayStatus] }}</mat-icon>
+            {{ labels[card.todayStatus] | uppercase }}
+          </p>
+
+          <p class="detail">
+            @if (card.todayCount === 0) {
+              No attendance recorded yet today.
+            } @else {
+              {{ card.todayCount }} {{ card.todayCount === 1 ? 'subject' : 'subjects' }} recorded today
+            }
+            · {{ card.student.classes?.name }}
+          </p>
+
+          <h2 class="week-title">This week</h2>
+          <ul class="week">
+            @for (day of card.week; track day.name) {
+              <li class="day" [attr.data-status]="day.status"
+                  [attr.aria-label]="day.name + ': ' + labels[day.status]">
+                <span class="day-letter">{{ day.letter }}</span>
+                <span class="day-status">{{ letters[day.status] }}</span>
+              </li>
+            }
+          </ul>
+
+        </section>
+
+      }
+    </div>
+
+  }
+
+</app-nav-shell>

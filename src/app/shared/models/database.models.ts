@@ -173,3 +173,9 @@ export interface AttendanceData {
   status: AttendanceStatus;
   note: string | null; // Observació per escriure justificació a l'assistència
 }
+
+
+// Interfície que representa el registre d'assistència. Herència. Afegim la assignatura
+export interface AttendanceWithSubject extends Attendance {
+  subjects: { name: string } | null;
+}

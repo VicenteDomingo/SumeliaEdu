@@ -1,3 +1,111 @@
-.dashboard {
-  padding: 24px;
+.date {
+  margin: 0 0 16px;
+  color: #424242;
+}
+
+.cards {
+  display: grid;
+  gap: 16px;
+}
+
+.child-card {
+  padding: 16px;
+  border: 2px solid #757575;
+  border-radius: 12px;
+  background: #f5f5f5;
+  color: #212121;
+}
+
+.child-name {
+  margin: 0;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+.status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 8px 0 4px;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.status mat-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 32px;
+}
+
+.detail {
+  margin: 0 0 12px;
+  font-size: 14px;
+}
+
+.week-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+
+.week {
+  display: flex;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.day {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  max-width: 64px;
+  padding: 6px 0;
+  border: 1px solid #757575;
+  border-radius: 6px;
+  background: white;
+}
+
+.day-letter {
+  font-size: 12px;
+}
+
+.day-status {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.child-card[data-status='present'],
+.day[data-status='present'] {
+  background: #e8f5e9;
+  border-color: #1b5e20;
+  color: #1b5e20;
+}
+
+.child-card[data-status='absent'],
+.day[data-status='absent'] {
+  background: #ffebee;
+  border-color: #b71c1c;
+  color: #b71c1c;
+}
+
+.child-card[data-status='late'],
+.day[data-status='late'] {
+  background: #fff8e1;
+  border-color: #7c4a00;
+  color: #7c4a00;
+}
+
+.child-card[data-status='justified'],
+.day[data-status='justified'] {
+  background: #e3f2fd;
+  border-color: #0d47a1;
+  color: #0d47a1;
+}
+
+@media (min-width: 768px) {
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
 }
