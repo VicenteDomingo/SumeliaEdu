@@ -1,0 +1,81 @@
+<app-nav-shell roleLabel="Parent" [items]="navItems">
+
+  <h1>Attendance</h1>
+
+  @if (loading) {
+    <p role="status">Loading...</p>
+
+  } @else if (children.length === 0) {
+    <p>No children are linked to your account yet. Please contact your school administrator.</p>
+
+  } @else {
+
+    @if (children.length > 1) {
+      <mat-form-field appearance="outline" class="child-select">
+        <mat-label>Child</mat-label>
+        <mat-select [value]="selectedChildId" (selectionChange)="onChildChange($event.value)">
+          @for (child of children; track child.id) {
+            <mat-option [value]="child.id">{{ child.full_name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+
+    <p class="child">
+      <strong>{{ selectedChild?.full_name }}</strong> · {{ selectedChild?.classes?.name }}
+    </p>
+
+    <div class="chips" role="group" aria-label="Filter by period">
+      @for (item of periods; track item.value) {
+        <button type="button" class="chip"
+                [class.selected]="period === item.value"
+                [attr.aria-pressed]="period === item.value"
+                (click)="setPeriod(item.value)">
+          {{ item.label }}
+        </button>
+      }
+    </div>
+
+    <div class="stats">
+      @for (box of statBoxes; track box.key) {
+        <div class="stat-box">
+          <strong>{{ stats[box.key] }}</strong>
+          <span>{{ box.label }}</span>
+        </div>
+      }
+    </div>
+    <p class="stats-note">Number of school days in this period</p>
+
+    <h2>Daily record</h2>
+
+    @if (days.length === 0) {
+      <p>No attendance recorded in this period.</p>
+    } @else {
+      <ul class="day-list">
+        @for (day of days; track day.date) {
+          <li class="day-row">
+
+            <div class="day-head">
+              <span class="day-date">{{ day.date | date:'EEE d MMM' }}</span>
+              <app-status-badge [status]="day.status"></app-status-badge>
+            </div>
+
+            <ul class="subjects">
+              @for (record of day.records; track record.id) {
+                <li>
+                  {{ record.subjects?.name }}: {{ labels[record.status] }}
+                  @if (record.note) {
+                    · {{ record.note }}
+                  }
+                </li>
+              }
+            </ul>
+
+          </li>
+        }
+      </ul>
+    }
+
+  }
+
+</app-nav-shell>

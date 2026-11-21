@@ -7,12 +7,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { NavShellComponent } from './nav-shell/nav-shell.component';
 import { RouterModule } from '@angular/router';
-
+import { StatusBadgeComponent } from './status-badge/status-badge.component';
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    NavShellComponent
+    NavShellComponent,
+    StatusBadgeComponent
   ],
   imports: [
     CommonModule,
@@ -23,7 +24,8 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     HeaderComponent,
-    NavShellComponent
+    NavShellComponent,
+    StatusBadgeComponent
   ]
 })
 export class SharedModule { }

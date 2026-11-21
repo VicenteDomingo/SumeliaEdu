@@ -1,0 +1,98 @@
+.child-select {
+  width: 100%;
+  max-width: 300px;
+}
+
+.child {
+  margin: 0 0 12px;
+}
+
+// Chips de periodo
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.chip {
+  min-height: 40px;
+  padding: 6px 16px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  background: white;
+  color: #212121;
+  cursor: pointer;
+}
+
+.chip.selected {
+  background: #0d47a1;
+  border-color: #0d47a1;
+  color: white;
+}
+
+.chip:focus-visible {
+  outline: 3px solid #0d47a1;
+  outline-offset: 2px;
+}
+
+// Cajas de estadísticas
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.stat-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 8px 4px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.stat-box strong {
+  font-size: 24px;
+}
+
+.stat-box span {
+  font-size: 13px;
+}
+
+.stats-note {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #424242;
+}
+
+// Registro diario
+.day-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.day-row {
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.day-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.day-date {
+  font-weight: 500;
+}
+
+.subjects {
+  margin: 6px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: #424242;
+}
