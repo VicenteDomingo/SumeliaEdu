@@ -174,8 +174,23 @@ export interface AttendanceData {
   note: string | null; // Observació per escriure justificació a l'assistència
 }
 
-
 // Interfície que representa el registre d'assistència. Herència. Afegim la assignatura
 export interface AttendanceWithSubject extends Attendance {
+  subjects: { name: string } | null;
+}
+
+// Interfície que representa les dades d'una nota que volem enviar a Supabase
+export interface GradeData {
+  school_id: string;
+  student_id: string;
+  subject_id: string;
+  term: Term;
+  assessment_name: string;
+  score: number | null;
+  max_score: number;
+}
+
+// Una nota junto con el nombre de su asignatura (la usará la familia en la parte 2) Interfície que hereta totes les propietats de la taula Grade. Així, volem totes les propietats de Grade, i també afegim una nota junt amb el nom de l'assignatura ( per a la família )
+export interface GradeWithSubject extends Grade {
   subjects: { name: string } | null;
 }

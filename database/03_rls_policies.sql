@@ -207,3 +207,12 @@ CREATE POLICY "rsvp_own"
 ON rsvp_responses FOR ALL
 USING (user_id = auth.uid())
 WITH CHECK (user_id = auth.uid());
+
+-- MESSAGES
+-- Cada usuari llegeix els seus missatges
+CREATE POLICY "messages_select_own"
+ON messages FOR SELECT
+USING (
+  school_id = get_my_school_id()
+  AND (from_id = auth.uid() OR to_id = auth.uid())
+);

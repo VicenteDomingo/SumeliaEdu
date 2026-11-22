@@ -22,7 +22,7 @@ export const TEACHER_NAV: NavItem[] =
     label: 'Grades', // Qualificacions
     icon: 'edit_note', 
     route: '/teacher/grades', 
-    enabled: false // Encara no el tenim habilitat
+    enabled: true // Encara no el tenim habilitat
   },
 
   { 

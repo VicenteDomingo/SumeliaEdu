@@ -1,0 +1,110 @@
+<app-nav-shell roleLabel="Teacher" [items]="navItems">
+
+  <h1>Grades</h1>
+
+  @if (loading) {
+    <p role="status">Loading...</p>
+
+  } @else if (subjects.length === 0) {
+    <p>You have no subjects assigned yet. Ask your school administrator.</p>
+
+  } @else {
+
+    <mat-form-field appearance="outline" class="subject-select">
+      <mat-label>Subject</mat-label>
+      <mat-select [value]="selectedSubjectId" (selectionChange)="onSubjectChange($event.value)">
+        @for (subject of subjects; track subject.id) {
+          <mat-option [value]="subject.id">{{ subject.name }} · {{ subject.classes?.name }}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+
+    <div class="chips" role="group" aria-label="Choose term">
+      @for (t of terms; track t) {
+        <button type="button" class="chip"
+                [class.selected]="term === t"
+                [attr.aria-pressed]="term === t"
+                (click)="setTerm(t)">
+          Term {{ t }}
+        </button>
+      }
+    </div>
+
+    @if (rows.length === 0) {
+      <p>There are no active students in this class.</p>
+
+    } @else {
+
+      @if (assessments.length === 0) {
+        <p>No assessments yet for Term {{ term }}. Add the first one below.</p>
+
+      } @else {
+        <div class="table-wrap">
+          <table class="grades-table">
+            <caption class="sr-only">
+              Grades of {{ selectedSubject?.name }}, {{ selectedSubject?.classes?.name }}, Term {{ term }}
+            </caption>
+            <thead>
+              <tr>
+                <th scope="col" class="student-col">Student</th>
+                @for (assessment of assessments; track assessment.name) {
+                  <th scope="col">
+                    {{ assessment.name }}<br />
+                    <span class="max">/ {{ assessment.maxScore }}</span>
+                  </th>
+                }
+                <th scope="col">Avg</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of rows; track row.student.id) {
+                <tr>
+                  <th scope="row" class="student-col">{{ row.student.full_name }}</th>
+
+                  @for (assessment of assessments; track assessment.name) {
+                    <td>
+                      <input type="number" class="score-input" inputmode="decimal"
+                             min="0" [max]="assessment.maxScore" step="any"
+                             [attr.aria-label]="'Score of ' + row.student.full_name + ' in ' + assessment.name"
+                             [(ngModel)]="row.scores[assessment.name]" />
+                    </td>
+                  }
+
+                  <td class="avg" [attr.data-level]="getRowLevel(row)">
+                    {{ getRowAverageText(row) }}
+                  </td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+
+      <h2>Add assessment</h2>
+      <div class="add-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input matInput type="text" [(ngModel)]="newName" placeholder="e.g. Test 1" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline">
+          <mat-label>Maximum score</mat-label>
+          <input matInput type="number" [(ngModel)]="newMax" />
+        </mat-form-field>
+
+        <button mat-stroked-button type="button" (click)="addAssessment()">
+          Add assessment
+        </button>
+      </div>
+
+      <div class="actions">
+        <button mat-flat-button color="primary" type="button"
+                (click)="save()" [disabled]="saving">
+          Save grades
+        </button>
+      </div>
+
+    }
+  }
+
+</app-nav-shell>

@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TakeAttendanceComponent } from './attendance/take-attendance/take-attendance.component';
+import { EnterGradesComponent } from './grades/enter-grades/enter-grades.component';
 
 
 const routes: Routes = [
@@ -9,7 +10,8 @@ const routes: Routes = [
   { path: 'dashboard', component: DashboardComponent },
   // Observem dues rutes per al mateix component. Amb 'subjectId', la pantalla obri directament eixa matèria (botó "Take" del dashboard). Sense ell, s'obri la primera (així funciona el menú)
   { path: 'attendance', component: TakeAttendanceComponent },
-  { path: 'attendance/:subjectId', component: TakeAttendanceComponent }
+  { path: 'attendance/:subjectId', component: TakeAttendanceComponent },
+  { path: 'grades', component: EnterGradesComponent }
 ];
 
 @NgModule({
