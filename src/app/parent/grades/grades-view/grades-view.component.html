@@ -1,0 +1,71 @@
+<app-nav-shell roleLabel="Parent" [items]="navItems">
+
+  <h1>Grades</h1>
+
+  @if (loading) {
+    <p role="status">Loading...</p>
+
+  } @else if (children.length === 0) {
+    <p>No children are linked to your account yet. Please contact your school administrator.</p>
+
+  } @else {
+
+    @if (children.length > 1) {
+      <mat-form-field appearance="outline" class="child-select">
+        <mat-label>Child</mat-label>
+        <mat-select [value]="selectedChildId" (selectionChange)="onChildChange($event.value)">
+          @for (child of children; track child.id) {
+            <mat-option [value]="child.id">{{ child.full_name }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    }
+
+    <p class="child">
+      <strong>{{ selectedChild?.full_name }}</strong> · {{ selectedChild?.classes?.name }}
+    </p>
+
+    <div class="chips" role="group" aria-label="Choose term">
+      @for (t of terms; track t) {
+        <button type="button" class="chip"
+                [class.selected]="term === t"
+                [attr.aria-pressed]="term === t"
+                (click)="setTerm(t)">
+          Term {{ t }}
+        </button>
+      }
+    </div>
+
+    @if (cards.length === 0) {
+      <p>No grades published yet for Term {{ term }}.</p>
+
+    } @else {
+
+      <div class="cards">
+        @for (card of cards; track card.subjectId) {
+          <section class="subject-card">
+
+            <div class="card-head">
+              <h2>{{ card.name }}</h2>
+              <span class="avg" [attr.data-level]="levelOf(card.average)">{{ card.average }}%</span>
+            </div>
+
+            <ul class="assessments">
+              @for (grade of card.grades; track grade.id) {
+                <li>{{ grade.assessment_name }}: {{ grade.score }} / {{ grade.max_score }}</li>
+              }
+            </ul>
+
+          </section>
+        }
+      </div>
+
+      <section class="overall">
+        <p>Overall average · Term {{ term }}</p>
+        <strong>{{ overall }}%</strong>
+      </section>
+
+    }
+  }
+
+</app-nav-shell>

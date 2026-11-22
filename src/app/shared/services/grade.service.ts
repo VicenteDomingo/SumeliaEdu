@@ -5,8 +5,10 @@ import { SupabaseService } from './supabase.service';
 import { // importem els models 
   Grade, // nota de la BBDD que rebem
   GradeData, // Interfície que representa les dades d'una nota que volem enviar a Supabase
-  Term // El tipus que limita a term 1, 2, 3
+  Term, // El tipus que limita a term 1, 2, 3
+  GradeWithSubject
 } from '../models/database.models';
+
 
 @Injectable({ 
   providedIn: 'root' 
@@ -33,5 +35,17 @@ export class GradeService {
     return await this.supabase.client
       .from('grades') // accedim a la taula grades 
       .upsert(rows, { onConflict: 'student_id,subject_id,term,assessment_name' }); // amb .upsert, volem combinar dues operacions: INSERT -> insertar un nou registre i UPDATE -> actualitzar un registre existent. Mitjançant la instrucció onConflict, li diem a Supabase que comprove la combinació d'aquestes 4 columnes. 
+  }
+
+    // Mètode per obtenir de Supabase les notes d'un alumne 
+  async getChildGrades(studentId: string) {
+    const { data, error } = await this.supabase.client // Prepara la consulta a la BBDD
+      .from('grades')
+      .select('*, subjects(name)') // * -> totes les columnes i el nom de la assignatura relacionada amb cada nota
+      .eq('student_id', studentId) // retorna les notes, l'id student del qual coincidisca amb l'id de l'alumne seleccionat
+      .not('score', 'is', null) // no retornes registres on score siga null (WHERE score IS NOT NULL). El professor pot desar també cel·les buides
+      .order('assessment_name');
+
+    return { data: data as GradeWithSubject[] | null, error };
   }
 }

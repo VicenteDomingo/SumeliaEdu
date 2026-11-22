@@ -11,11 +11,13 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 import { SharedModule } from '../shared/shared.module';
 import { AttendanceHistoryComponent } from './attendance/attendance-history/attendance-history.component';
+import { GradesViewComponent } from './grades/grades-view/grades-view.component';
 
 @NgModule({
   declarations: [
     DashboardComponent,
-    AttendanceHistoryComponent
+    AttendanceHistoryComponent,
+    GradesViewComponent
   ],
   imports: [
     CommonModule,

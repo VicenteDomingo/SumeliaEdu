@@ -1,0 +1,115 @@
+.child-select {
+  width: 100%;
+  max-width: 300px;
+}
+
+.child {
+  margin: 0 0 12px;
+}
+
+// Chips de trimestre
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.chip {
+  min-height: 40px;
+  padding: 6px 16px;
+  border: 1px solid #757575;
+  border-radius: 20px;
+  background: white;
+  color: #212121;
+  cursor: pointer;
+}
+
+.chip.selected {
+  background: #0d47a1;
+  border-color: #0d47a1;
+  color: white;
+}
+
+.chip:focus-visible {
+  outline: 3px solid #0d47a1;
+  outline-offset: 2px;
+}
+
+// Mòvil: una tarjeta debajo de otra. Escritorio: en columnas.
+.cards {
+  display: grid;
+  gap: 12px;
+}
+
+.subject-card {
+  padding: 12px 16px;
+  border: 1px solid #bdbdbd;
+  border-radius: 8px;
+  background: #f5f5f5;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-head h2 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.avg {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.avg[data-level='good'] {
+  color: #1b5e20;
+}
+
+.avg[data-level='medium'] {
+  color: #7c4a00;
+}
+
+.avg[data-level='low'] {
+  color: #b71c1c;
+}
+
+.assessments {
+  margin: 8px 0 0;
+  padding: 0;
+  list-style: none;
+  font-size: 14px;
+  color: #424242;
+}
+
+.assessments li {
+  padding: 2px 0;
+}
+
+// Tarjeta de la media general
+.overall {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: #4a148c;
+  color: white;
+  text-align: center;
+}
+
+.overall p {
+  margin: 0;
+  font-size: 14px;
+}
+
+.overall strong {
+  font-size: 32px;
+}
+
+@media (min-width: 768px) {
+  .cards {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+}
